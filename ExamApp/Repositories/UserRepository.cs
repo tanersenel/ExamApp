@@ -35,6 +35,7 @@ namespace ExamApp.Repositories
         {
             var user =  _examContext.User.FirstOrDefault(x => x.id == id);
             var result = _examContext.User.Remove(user);
+            _examContext.SaveChanges();
             return true;
         }
 

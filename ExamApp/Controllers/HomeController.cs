@@ -1,4 +1,5 @@
-﻿using ExamApp.Models;
+﻿using ExamApp.Entities;
+using ExamApp.Models;
 using ExamApp.Repositories;
 using ExamApp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,21 +17,37 @@ namespace ExamApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IRssFeedRepository _rssRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IContentRepository _contentRepository;
 
 
-        public HomeController(ILogger<HomeController> logger, IRssFeedRepository rssRepository, IUserRepository userRepository)
+        public HomeController(ILogger<HomeController> logger, IRssFeedRepository rssRepository, IUserRepository userRepository, IContentRepository contentRepository)
         {
             _rssRepository = rssRepository;
             _userRepository = userRepository;
+            _contentRepository = contentRepository; 
             _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
            var feeds= await _rssRepository.GetFeeds();
-            var html =await _rssRepository.GetFeedContent(feeds.FirstOrDefault().Link);
+            foreach (var item in feeds)
+            {
+                var html = await _rssRepository.GetFeedContent(item.Link);
+                var content = new Content()
+                {
+                    id = Guid.NewGuid().ToString(),
+                    CreatedDate = DateTime.Now,
+                    Descriiption = item.Description,
+                    Link = item.Link,
+                    Title = item.Title,
+                    ContentText = html.ToString()
+                };
+                _contentRepository.CreateContent(content);
+            }
             
-            return View(html);
+            
+            return View(_contentRepository.GetAlContent());
         }
 
         public IActionResult Privacy()

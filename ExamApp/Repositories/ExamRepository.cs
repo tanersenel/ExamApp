@@ -19,6 +19,7 @@ namespace ExamApp.Repositories
         public async Task<bool> AddQuestions(IEnumerable<Question> questions)
         {
             await _examContext.Question.AddRangeAsync(questions);
+            _examContext.SaveChanges();
             return true;
         }
 
@@ -26,6 +27,7 @@ namespace ExamApp.Repositories
         {
             var exam =  _examContext.Exam.FirstOrDefault(x => x.id == id);
             var result = _examContext.Exam.Remove(exam);
+            _examContext.SaveChanges();
             return true;
         }
 

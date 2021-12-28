@@ -31,6 +31,7 @@ namespace ExamApp
             services.AddTransient<IRssFeedRepository, RssFeedRepository>();
             services.AddTransient<IExamRepository, ExamRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IContentRepository, ContentRepository>();
             services.AddControllersWithViews();
          
         }

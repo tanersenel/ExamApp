@@ -1,6 +1,5 @@
 ﻿using ExamApp.Models;
 using HtmlAgilityPack;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +33,7 @@ namespace ExamApp.Repositories
                                });
             return RSSFeedData.Take(5);
         }
-        public async Task<IEnumerable<HtmlNode>> GetFeedContent(string url)
+        public async Task<string> GetFeedContent(string url)
         {
             HttpClient hc = new HttpClient();
             HttpResponseMessage result = await hc.GetAsync(url);
@@ -47,7 +46,12 @@ namespace ExamApp.Repositories
 
             var root = doc.DocumentNode;
             var commonPosts = root.Descendants("article").FirstOrDefault().Descendants("p");
-            return commonPosts;
+            var htmlStr = "";
+            foreach (var commonPost in commonPosts)
+            {
+                htmlStr = htmlStr + commonPost.InnerHtml.ToString();
+            }
+            return htmlStr;
            
         }
     }
