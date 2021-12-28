@@ -1,4 +1,5 @@
 ﻿using ExamApp.Models;
+using ExamApp.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,15 +13,21 @@ namespace ExamApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRssFeedRepository _rssRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IRssFeedRepository rssRepository)
         {
+            _rssRepository = rssRepository;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+           var feeds= await _rssRepository.GetFeeds();
+            var html =await _rssRepository.GetFeedContent(feeds.FirstOrDefault().Link);
+            
+            return View(html);
         }
 
         public IActionResult Privacy()
