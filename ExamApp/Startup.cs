@@ -1,4 +1,6 @@
+using ExamApp.Data;
 using ExamApp.Repositories;
+using ExamApp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +19,7 @@ namespace ExamApp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -24,8 +27,12 @@ namespace ExamApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkSqlite().AddDbContext<ExamContext>();
             services.AddTransient<IRssFeedRepository, RssFeedRepository>();
+            services.AddTransient<IExamRepository, ExamRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
+         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +48,7 @@ namespace ExamApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

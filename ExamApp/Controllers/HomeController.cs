@@ -1,5 +1,6 @@
 ﻿using ExamApp.Models;
 using ExamApp.Repositories;
+using ExamApp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,11 +15,13 @@ namespace ExamApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IRssFeedRepository _rssRepository;
+        private readonly IUserRepository _userRepository;
 
 
-        public HomeController(ILogger<HomeController> logger, IRssFeedRepository rssRepository)
+        public HomeController(ILogger<HomeController> logger, IRssFeedRepository rssRepository, IUserRepository userRepository)
         {
             _rssRepository = rssRepository;
+            _userRepository = userRepository;
             _logger = logger;
         }
 
