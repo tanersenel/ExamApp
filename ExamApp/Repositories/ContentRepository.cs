@@ -1,21 +1,23 @@
-﻿using ExamApp.Entities;
+﻿using ExamApp.Data;
+using ExamApp.Entities;
 using System.Threading.Tasks;
 
 namespace ExamApp.Repositories.Interfaces
 {
     public class ContentRepository : IContentRepository
     {
-        public Task<Content> CreateContent(Content content)
+        private readonly ExamContext _examContext;
+        public Content CreateContent(Content content)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteAllContent()
+        public bool DeleteAllContent()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteContent(string id)
+        public bool DeleteContent(string id)
         {
             throw new System.NotImplementedException();
         }

@@ -11,6 +11,11 @@ namespace ExamApp.Repositories
     public class ExamRepository : IExamRepository
     {
         private readonly ExamContext _examContext;
+        public ExamRepository(ExamContext examContext)
+        {
+            _examContext = examContext; 
+
+        }
         public async Task<bool> AddQuestions(IEnumerable<Question> questions)
         {
             await _examContext.Question.AddRangeAsync(questions);
