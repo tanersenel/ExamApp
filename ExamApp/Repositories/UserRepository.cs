@@ -1,6 +1,7 @@
 ﻿using ExamApp.Data;
 
 using ExamApp.Entities;
+using ExamApp.Extensions;
 using ExamApp.Repositories.Interfaces;
 using System;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ExamApp.Repositories
             {
                 _examContext.User.AddRange(new User[]
                     {
-                             new User{ id=Guid.NewGuid().ToString(), Username ="admin", Password ="123456A@!" }
+                             new User{ id=Guid.NewGuid().ToString(), Username ="admin".EncryptString(), Password ="123456A@!".EncryptString() }
                     });
                 _examContext.SaveChanges();
             }
@@ -41,7 +42,7 @@ namespace ExamApp.Repositories
 
         public  User Login(User login)
         {
-            var user = _examContext.User.FirstOrDefault(x => x.Username == login.Username & x.Password == login.Password);
+            var user = _examContext.User.FirstOrDefault(x => x.Username == login.Username.EncryptString() & x.Password == login.Password.EncryptString());
             _ = user ?? throw new ArgumentNullException(nameof(user));
             return user;
         }

@@ -7,8 +7,8 @@ namespace ExamApp.Repositories
 {
     public interface IRssFeedRepository
     {
-        Task<IEnumerable<RssFeedModel>> GetFeeds();
-        Task<string> GetFeedContent(string url);
+        Task<IEnumerable<FeedModel>> GetFeeds();
+        Task<FeedDetailModel> GetFeedContent(string url);
 
     }
 }

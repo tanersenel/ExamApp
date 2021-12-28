@@ -31,6 +31,7 @@ namespace ExamApp.Controllers
         public async Task<IActionResult> Index()
         {
            var feeds= await _rssRepository.GetFeeds();
+            _contentRepository.DeleteAllContent();
             foreach (var item in feeds)
             {
                 var html = await _rssRepository.GetFeedContent(item.Link);
@@ -40,8 +41,8 @@ namespace ExamApp.Controllers
                     CreatedDate = DateTime.Now,
                     Descriiption = item.Description,
                     Link = item.Link,
-                    Title = item.Title,
-                    ContentText = html.ToString()
+                    Title = html.Title,
+                    ContentText = html.HtmlStr.ToString()
                 };
                 _contentRepository.CreateContent(content);
             }

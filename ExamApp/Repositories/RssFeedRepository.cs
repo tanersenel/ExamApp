@@ -1,4 +1,5 @@
-﻿using ExamApp.Models;
+﻿using ExamApp.Extensions;
+using ExamApp.Models;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -13,27 +14,38 @@ namespace ExamApp.Repositories
 {
     public class RssFeedRepository : IRssFeedRepository
     {
-        private string rssUrl = "https://www.wired.com/rss/";
 
-        public async Task<IEnumerable<RssFeedModel>> GetFeeds()
+        private string rssUrl = "https://www.wired.com/sitemap/?month="+DateTime.Now.Month+"&week="+DateTime.Now.GetWeekNumberOfMonth().ToString()+"&year="+DateTime.Now.Year;
+
+        public async Task<IEnumerable<FeedModel>> GetFeeds()
         {
-            Uri adress = new Uri(rssUrl);
-            WebClient wclient = new WebClient();
-            var RSSData =await wclient.DownloadStringTaskAsync(adress);
+            HttpClient hc = new HttpClient();
+            HttpResponseMessage result = await hc.GetAsync(rssUrl);
 
-            XDocument xml = XDocument.Parse(RSSData);
-            var RSSFeedData = (from x in xml.Descendants("item")
-                               select new RssFeedModel
+            Stream stream = await result.Content.ReadAsStreamAsync();
+
+            HtmlDocument doc = new HtmlDocument();
+
+            doc.Load(stream);
+
+            var root = doc.DocumentNode;
+            var commonPosts = root.SelectSingleNode("//div[@class='sitemap__section-archive']").Descendants("li").ToArray();
+            Array.Reverse(commonPosts);
+            var newcommonPosts = commonPosts.ToList().Take(5);
+           
+            var RSSFeedData = (from x in newcommonPosts
+                               select new FeedModel
                                {
                                    id = Guid.NewGuid().ToString(),
-                                   Title = ((string)x.Element("title")),
-                                   Link = ((string)x.Element("link")),
-                                   Description = ((string)x.Element("description"))
+                                   CreatedDate = DateTime.Now,
+                                   Link = x.InnerText
                                    
                                });
             return RSSFeedData.Take(5);
+
+          
         }
-        public async Task<string> GetFeedContent(string url)
+        public async Task<FeedDetailModel> GetFeedContent(string url)
         {
             HttpClient hc = new HttpClient();
             HttpResponseMessage result = await hc.GetAsync(url);
@@ -46,13 +58,19 @@ namespace ExamApp.Repositories
 
             var root = doc.DocumentNode;
             var commonPosts = root.Descendants("article").FirstOrDefault().Descendants("p");
+            var title = root.Descendants("title").FirstOrDefault();
             var htmlStr = "";
             foreach (var commonPost in commonPosts)
             {
                 htmlStr = htmlStr + commonPost.InnerHtml.ToString();
             }
-            return htmlStr;
+            return new FeedDetailModel()
+            {
+                Title = title.InnerText.Replace("| WIRED",""),
+                HtmlStr = htmlStr
+            };
            
         }
     }
 }
+
