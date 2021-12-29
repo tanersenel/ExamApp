@@ -1,0 +1,17 @@
+﻿<div class="row col-md-12 login-box">
+  <form class="chat-input" asp-controller="Home" asp-action="Login">
+    <div class="col-md-12">
+        <h1>Kullanıcı Giriş</h1>
+        <div class="col-md-12">
+            <input name="username" type="text" placeholder="Kullanıcı Adı" id="username" />
+        </div>
+        <div class="col-md-12">
+            <input name="password" type="password" placeholder="" id="password" />
+        </div>
+        <div class="col-md-12">
+            <button type="submit" id="btnLogin" value="Login">Giriş Yap</button>
+        </div>
+    </div>
+    </form>
+    <span class="col-md-12">@ViewBag.Error</span>
+</div>

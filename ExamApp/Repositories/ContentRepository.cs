@@ -39,9 +39,18 @@ namespace ExamApp.Repositories.Interfaces
             
         }
 
-        public IEnumerable<Content> GetAlContent()
+        public IEnumerable<Content> GetAllContent()
         {
             return _examContext.Content.ToList();
+        }
+        public Content GetContent(string contentid)
+        {
+            return _examContext.Content.FirstOrDefault(x => x.id == contentid);
+        }
+
+        public Content GetContentWithLink(string link)
+        {
+            return _examContext.Content.FirstOrDefault(x => x.Link  == link);
         }
     }
 }

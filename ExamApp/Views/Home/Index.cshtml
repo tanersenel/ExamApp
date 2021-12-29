@@ -1,10 +1,5 @@
 ﻿
-@model IEnumerable<Content>
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@foreach (var item in Model)
-{
-  <p><a href="@item.Link"> @Html.Raw(item.Title)</a></p> 
-}

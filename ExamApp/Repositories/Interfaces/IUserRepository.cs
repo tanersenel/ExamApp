@@ -1,4 +1,5 @@
 ﻿using ExamApp.Entities;
+using ExamApp.Models;
 using System.Threading.Tasks;
 
 namespace ExamApp.Repositories.Interfaces
@@ -7,7 +8,7 @@ namespace ExamApp.Repositories.Interfaces
     {
         Task<User> CreateUser(User user);
         bool DeleteUser(string id);
-        User Login(User user);
+        ResponseModel Login(User user);
 
 
     }

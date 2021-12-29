@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExamApp.Entities
@@ -7,7 +8,7 @@ namespace ExamApp.Entities
     public class Question
     {
         [Key]
-        public string id { get; set; }
+        public string id { get; set; } = Guid.NewGuid().ToString(); 
         public string ExamId { get; set; }
         public string Text { get; set; }
         public string A { get; set; }

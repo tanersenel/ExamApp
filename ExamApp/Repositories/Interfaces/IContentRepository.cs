@@ -9,7 +9,9 @@ namespace ExamApp.Repositories.Interfaces
         Content CreateContent(Content content);
         bool DeleteContent(string id);
         bool DeleteAllContent();
-        IEnumerable<Content> GetAlContent();
+        IEnumerable<Content> GetAllContent();
+        Content GetContent(string contentid);
+        Content GetContentWithLink(string link);
 
 
 

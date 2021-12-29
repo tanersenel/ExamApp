@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Exam>
+
+    <table class="table">
+        <thead>
+            <tr>
+            <th>Exam</th>
+               <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+    
+@foreach (var exam in Model)
+{
+    <tr id="examid-@exam.id">
+        <td>@Html.Raw(exam.Title)</td>
+        <td>@Html.Raw(exam.CreatedDate)</td>
+        <td>
+            <a class="btn btn-primary" href="/User/Exam/@exam.id">Start Exam</a>
+            
+            </td>
+    </tr>
+}
+</tbody>
+</table>

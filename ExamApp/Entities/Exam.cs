@@ -10,9 +10,12 @@ namespace ExamApp.Entities
     {
         [Key]
         public string id { get; set; }
+        [ForeignKey("Content")]
         public string ContentId { get; set; }
         public string Title { get; set; }
-        public virtual ICollection<Question> Questions { get; set; }
+        public virtual IEnumerable<Question> Questions { get; set; }
+        
+        public virtual Content Content { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

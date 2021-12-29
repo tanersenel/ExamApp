@@ -69,3 +69,58 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+.login-box {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.content-text 
+{
+    height:300px;
+    max-height:300px;
+    overflow:auto;
+    border: 2px solid;
+    width:100%; 
+}
+.choices
+{
+    float:left;
+}
+.q-container {
+    padding: 10px;
+    justify-content: center;
+}
+.q-context {
+    border: 1px solid;
+    /* margin: 5px; */
+    padding: 5px;
+    margin-bottom:5px;
+}
+.content-text-user{
+    height: 300px;
+    max-height: 300px;
+    overflow: auto;
+    width: 100%;
+}
+.choices-user {
+    float: left;
+    border: 1px solid;
+}
+
+.q-container-user {
+    padding: 10px;
+    justify-content: center;
+}
+
+.q-context-user {
+   
+    padding: 5px;
+    margin-bottom: 5px;
+}
+.trueanswer{
+    background-color:lawngreen;
+}
+.wronganswer{
+    background-color:red;
+}

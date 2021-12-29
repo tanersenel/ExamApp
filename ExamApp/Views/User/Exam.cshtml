@@ -1,0 +1,53 @@
+﻿@model Exam
+@{
+    ViewData["Title"] = "Home Page";
+    int i = 1;
+}
+ <input type="hidden" id="hfExamId" value="@Model.id" />
+<div class="col-md-12">
+    <div class="row">
+        <h2>@Model.Title</h2>
+       
+    </div>
+    <div class="row">
+        <div class="content-text" id="content-text-user">
+            @Html.Raw(Model.Content.ContentText)
+        </div>
+    </div>
+    <div class="row q-container-user">
+        @foreach(var question in Model.Questions)       
+        {
+            <input type="hidden" id="hfQuestion-@i" value="@question.id">
+            <div class="col-md-6 q-context-user">
+                <span class="q-title">Question @i</span>
+                <p>@question.Text</p>
+
+              <div class="col-md-12">
+                <div class="col-md-12 choices-user">
+                    <input type="radio" name="Question-@i" class="form-check-label" id="txtQ-A-@question.id" value="A" />
+                    <label class="form-check-label" for="txtQ-@i-A">A ) @question.A</label>
+                </div>
+                 <div class="col-md-12 choices-user">
+                   <input type="radio" name="Question-@i" class="form-check-label" id="txtQ-B-@question.id" value="B"  />
+                    <label class="form-check-label" for="txtQ-@i-B">B ) @question.B</label>
+                </div>
+                 <div class="col-md-12 choices-user">
+                     <input type="radio" name="Question-@i" class="form-check-label" id="txtQ-C-@question.id" value="C" />
+                    <label  class="form-check-label" for="txtQ-@i-C">C ) @question.C</label>
+                </div>
+                 <div class="col-md-12 choices-user">
+                     <input type="radio" name="Question-@i" class="form-check-label" id="txtQ-D-@question.id" value="D"/>
+                    <label class="form-check-label" for="txtQ-@i-D">D ) @question.B</label>
+                </div>
+                
+              </div>
+            </div>
+            @@i = i + 1;
+        }
+    </div>
+     <div class="row q-container">
+         <button type="button" id="btnFinish" class="btn btn-primary">FINISH EXAM</button>
+     </div>
+
+</div>
+

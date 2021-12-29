@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace ExamApp.Controllers
 {
@@ -30,29 +32,29 @@ namespace ExamApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-           var feeds= await _rssRepository.GetFeeds();
-            _contentRepository.DeleteAllContent();
-            foreach (var item in feeds)
-            {
-                var html = await _rssRepository.GetFeedContent(item.Link);
-                var content = new Content()
-                {
-                    id = Guid.NewGuid().ToString(),
-                    CreatedDate = DateTime.Now,
-                    Descriiption = item.Description,
-                    Link = item.Link,
-                    Title = html.Title,
-                    ContentText = html.HtmlStr.ToString()
-                };
-                _contentRepository.CreateContent(content);
-            }
+          
             
-            
-            return View(_contentRepository.GetAlContent());
+            return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Login()
         {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login([FromForm] User user)
+        {
+           var response =  _userRepository.Login(user);
+            if (response.Status) {
+                string jsonString = JsonSerializer.Serialize(response.Response);
+                HttpContext.Session.SetString("user", jsonString);
+                var loginuser = (User)response.Response;
+                if (loginuser.UserType==(int)UserType.Admin)
+                     return RedirectToAction("Index", "Panel");
+                else if (loginuser.UserType == (int)UserType.User)
+                    return RedirectToAction("Index", "User");
+            }
+            ViewBag.Error = response.Error;
             return View();
         }
 

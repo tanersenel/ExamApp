@@ -2,6 +2,7 @@
 
 using ExamApp.Entities;
 using ExamApp.Extensions;
+using ExamApp.Models;
 using ExamApp.Repositories.Interfaces;
 using System;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace ExamApp.Repositories
             {
                 _examContext.User.AddRange(new User[]
                     {
-                             new User{ id=Guid.NewGuid().ToString(), Username ="admin".EncryptString(), Password ="123456A@!".EncryptString() }
+                             new User{ id=Guid.NewGuid().ToString(), Username ="admin".Encrypt(), Password ="123456A@!".Encrypt(), UserType=(int)UserType.Admin },
+                             new User{ id=Guid.NewGuid().ToString(), Username ="user".Encrypt(), Password ="123456A@!".Encrypt(), UserType=(int)UserType.User }
                     });
                 _examContext.SaveChanges();
             }
@@ -40,11 +42,18 @@ namespace ExamApp.Repositories
             return true;
         }
 
-        public  User Login(User login)
+        public ResponseModel Login(User login)
         {
-            var user = _examContext.User.FirstOrDefault(x => x.Username == login.Username.EncryptString() & x.Password == login.Password.EncryptString());
-            _ = user ?? throw new ArgumentNullException(nameof(user));
-            return user;
+            ResponseModel response = new ResponseModel();
+            var user = _examContext.User.FirstOrDefault(x => x.Username == login.Username.Encrypt() & x.Password == login.Password.Encrypt());
+            if (user is null) { 
+                response.Status = false;
+                response.Error = "Kullanıcı Blunamadı";
+                return response;
+            }
+            response.Response = user;
+            response.Status = true;
+            return response;
         }
     }
 }

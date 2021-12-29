@@ -1,0 +1,62 @@
+﻿
+@model IEnumerable<Content>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="col-md-12">
+    <div class="row">
+        <h2>Content</h2>
+        <select class="form-control"  name="ContentId" id="ContentId">
+             <option value="0">Select Content</option>
+            @foreach (var item in Model)
+                {
+                  <option value="@item.id">@Html.Raw(item.Title)</option>
+                }
+        </select>    
+    </div>
+    <div class="row">
+        <div class="content-text" id="content-text">
+
+        </div>
+    </div>
+    <div class="row q-container">
+        @for(int i= 1;i<5;i++)
+        {
+            <div class="col-md-12 q-context">
+                <span class="q-title">Question @i</span>
+                 <input type="text" class="form-control" id="Question-@i" />
+              <div class="col-md-12">
+                <div class="col-md-6 choices">
+                    A) <input type="text" class="form-control" id="txtQ-@i-A" />
+                </div>
+                 <div class="col-md-6 choices">
+                    B) <input type="text" class="form-control"  id="txtQ-@i-B" />
+                </div>
+                 <div class="col-md-6 choices">
+                    C) <input type="text" class="form-control"  id="txtQ-@i-C" />
+                </div>
+                 <div class="col-md-6 choices">
+                    D) <input type="text" class="form-control"  id="txtQ-@i-D" />
+                </div>
+                 <div class="col-md-12 row">
+                    Select Answer 
+                    <select class="form-control answer"  id="answer-@i">
+                         <option valu"">Select</option>
+                        <option valu"A">A</option>
+                        <option valu"B">B</option>
+                        <option valu"C">C</option>
+                        <option valu"D">D</option>
+                    </select>
+                </div>
+
+              </div>
+            </div>
+
+        }
+    </div>
+     <div class="row q-container">
+         <button type="button" id="btnCreate" class="btn btn-primary">CREATE EXAM</button>
+     </div>
+
+</div>
+

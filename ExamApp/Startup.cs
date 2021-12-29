@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Session;
 
 namespace ExamApp
 {
@@ -32,8 +33,20 @@ namespace ExamApp
             services.AddTransient<IExamRepository, ExamRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IContentRepository, ContentRepository>();
+
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
-         
+        
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +67,7 @@ namespace ExamApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

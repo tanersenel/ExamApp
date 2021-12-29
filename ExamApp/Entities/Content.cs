@@ -12,6 +12,7 @@ namespace ExamApp.Entities
         public string Link { get; set; }
         public string Descriiption { get; set; }
         public string ContentText { get; set; }
+        public virtual Exam Exam { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

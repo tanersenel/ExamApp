@@ -35,8 +35,9 @@ namespace ExamApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Question>().HasKey(p => new { p.id, p.ExamId });
+           
         }
-            
+
 
     }
 }
