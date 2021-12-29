@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  examapp:
+    image: ${DOCKER_REGISTRY-}examapp
+    build:
+      context: .
+      dockerfile: ExamApp/Dockerfile
