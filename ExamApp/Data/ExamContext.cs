@@ -1,4 +1,5 @@
 ﻿using ExamApp.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -7,6 +8,7 @@ namespace ExamApp.Data
 {
     public class ExamContext: DbContext
     {
+        private readonly IWebHostEnvironment  _hostingEnvironment;
         public DbSet<Exam> Exam { get; set; }
         public DbSet<Question> Question { get; set; }
         public DbSet<User> User { get; set; }
@@ -15,10 +17,10 @@ namespace ExamApp.Data
         public string DbPath { get; private set; }
         private static bool _created = false;
 
-        public ExamContext()
+        public ExamContext(IWebHostEnvironment hostingEnvironment)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
+            _hostingEnvironment = hostingEnvironment;
+            var path = _hostingEnvironment.ContentRootPath;
             DbPath = $"{path}{System.IO.Path.DirectorySeparatorChar}exam.db";
             if (!_created)
             {

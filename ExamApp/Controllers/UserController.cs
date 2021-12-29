@@ -1,8 +1,10 @@
-﻿using ExamApp.Repositories;
+﻿using ExamApp.Models;
+using ExamApp.Repositories;
 using ExamApp.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace ExamApp.Controllers
 {
@@ -42,13 +44,20 @@ namespace ExamApp.Controllers
 
         }
         [HttpPost]
-        public JsonResult FinishExam(string examid)
+        public JsonResult FinishExam(UserAnswer answers)
         {
             var user = HttpContext.Session.GetString("user");
             if (user is null) return null;
-            var content = _examRepository.GetExam(examid);
+            var exam = _examRepository.GetExam(answers.ExamId);
+            foreach (var ans in answers.Answers)
+            {
+                var q = exam.Questions.FirstOrDefault(x => x.id == ans.id);
+                ans.True = q.Answer == ans.Answer;
+                ans.TrueAnswer = q.Answer;
+
+            }
            
-            return Json(content.Questions);
+            return Json(answers);
         }
     }
 }

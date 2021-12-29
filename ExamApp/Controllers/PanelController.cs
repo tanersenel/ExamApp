@@ -31,7 +31,7 @@ namespace ExamApp.Controllers
 
         public IActionResult Index()
         {
-           var user= HttpContext.Session.GetString("user");
+           var user= HttpContext.Session.GetString("admin");
             if(user is null) return RedirectToAction("Login", "Home");
 
             var exams = _examRepository.GetAllExams();
@@ -40,7 +40,7 @@ namespace ExamApp.Controllers
         }
         public async Task<IActionResult> Add()
         {
-            var user = HttpContext.Session.GetString("user");
+            var user = HttpContext.Session.GetString("admin");
             if (user is null) return RedirectToAction("Login", "Home");
 
             var feeds = await _rssRepository.GetFeeds();
@@ -66,7 +66,7 @@ namespace ExamApp.Controllers
         }
         public JsonResult GetContentDetail(string contentid)
         {
-            var user = HttpContext.Session.GetString("user");
+            var user = HttpContext.Session.GetString("admin");
             if (user is null) return null;
             var content = _contentRepository.GetContent(contentid);
            
@@ -75,7 +75,7 @@ namespace ExamApp.Controllers
         [HttpPost]
         public JsonResult CreateExam(List<Question> questions)
         {
-            var user = HttpContext.Session.GetString("user");
+            var user = HttpContext.Session.GetString("admin");
             if (user is null) return null;
             var content = _examRepository.AddQuestions(questions);
             if(content.IsFaulted)
@@ -87,7 +87,7 @@ namespace ExamApp.Controllers
         [HttpPost]
         public JsonResult DeleteExam(string examid)
         {
-            var user = HttpContext.Session.GetString("user");
+            var user = HttpContext.Session.GetString("admin");
             if (user is null) return null;
             var content = _examRepository.DeleteExam(examid);
             if (!content)

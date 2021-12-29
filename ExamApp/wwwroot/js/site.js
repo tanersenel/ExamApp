@@ -68,26 +68,35 @@ $(document).ready(function () {
         });
     });
     $('#btnFinish').click(function () {
+        $('#btnFinish').prop('disabled', 'disabled');
         var examid = $('#hfExamId').val();
        
         const answers = [];
-        // "save it to a variable"
-
-
         for (var i = 1; i < 5; i++) {
            
             var QuestionId = $('#hfQuestion-'+i).val();
             var answer = $('input[name="Question-'+i+'"]:checked').val();
                 answers.push({
                 ExamId: examid,
-                QuestionId: QuestionId,
+                id: QuestionId,
                 Answer: answer
             });
         }
-
-        $.post("/User/FinishExam", { examid: examid }, function (data) {
-            var ans = data;
-
+        var model = {
+            ExamId: examid,
+            Answers:answers 
+        }
+        $.post("/User/FinishExam", { answers: model }, function (data) {
+            var ans = data.answers;
+            $.each(ans, function (index, value) {
+                if (value.true)
+                    $('#txtQ-' + value.trueAnswer + '-' + value.id).parent().addClass('trueanswer');
+                else {
+                    $('#txtQ-' + value.answer + '-' + value.id).parent().addClass('wronganswer');
+                    $('#txtQ-' + value.trueAnswer + '-' + value.id).parent().addClass('trueanswer');
+                }
+            });
+          
         });
     });
     

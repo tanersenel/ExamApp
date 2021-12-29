@@ -47,12 +47,19 @@ namespace ExamApp.Controllers
            var response =  _userRepository.Login(user);
             if (response.Status) {
                 string jsonString = JsonSerializer.Serialize(response.Response);
-                HttpContext.Session.SetString("user", jsonString);
+                
                 var loginuser = (User)response.Response;
-                if (loginuser.UserType==(int)UserType.Admin)
-                     return RedirectToAction("Index", "Panel");
+                if (loginuser.UserType == (int)UserType.Admin)
+                {
+                    HttpContext.Session.SetString("admin", jsonString);
+                    return RedirectToAction("Index", "Panel");
+                }                     
                 else if (loginuser.UserType == (int)UserType.User)
+                {
+                    HttpContext.Session.SetString("user", jsonString);
                     return RedirectToAction("Index", "User");
+                }
+                    
             }
             ViewBag.Error = response.Error;
             return View();
