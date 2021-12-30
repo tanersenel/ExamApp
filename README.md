@@ -12,7 +12,7 @@ Projede Kullanılan kütüphane ve paketler
  - HtmlAgilityPack 
 
 ## Web Projesi
-.NetCore web api 
+.NetCore web 
 Docker üzerinde çalıştırıldığında
 http://localhost:8000/  adresinden erişilmektedir.
 
